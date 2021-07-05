@@ -1,0 +1,903 @@
+<html>
+
+<head>
+    <meta charset="UTF-8">
+    <title>HackaMotiVE'20</title>    
+    <link rel="icon" href="../../Elektrobit.ico">
+
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="new.css">
+    <link rel="stylesheet" href="home.css">
+
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <script src="https://www.gstatic.com/firebasejs/7.21.0/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/7.21.0/firebase-auth.js"></script>
+    <script src = "newScript.js"></script>
+    
+    <script type="text/javascript"> 
+        function preventBack() { 
+            window.history.forward();  
+        } 
+          
+        setTimeout("preventBack()", 0); 
+          
+        window.onunload = function () { null }; 
+    </script> 
+</head>
+
+<body id = "body" onload="load();">
+    <div id = "mainLoader" style = "display: none;height:100vh;display: none;align-items: center;justify-content: center;">
+    <div class="loader3" ></div>
+</div>
+   <div id = "complete">
+  
+    <div id="container-login">
+        
+        <div id="title">
+            <a href = "../../index.html"><img src="../../Elektrobit.png" style="height: 72px;"></a>
+            <a href = "../../index.html"><img src="../../vitLogo2.png" style="height: 72px;"></a>
+        </div>
+
+        
+            <div class="input">
+                <div class="input-addon">
+                    <i class="material-icons">email</i>
+                </div>
+                <input id="Email" placeholder="Email" type="text" required class="validate" autocomplete="off">
+            </div>
+
+            <div class="clearfix"></div>
+
+            <div class="input">
+                <div class="input-addon">
+                    <i class="material-icons">vpn_key</i>
+                </div>
+                
+                <input id="Password" placeholder="Password" type="password" required class="validate" autocomplete="off">
+            </div>
+            <p id = "emailVarification" style = "display: none;">Email not verified please verify, <a href = "#" onclick="varification()">Send verification </a></p>
+
+            <div class="remember-me">
+                
+            </div>
+            <div id = "loader" class="loader" style = "display: none;margin-left: 47%;"></div>
+            <input id = "signIn" onclick = "SignIn()" style= "margin: 5% 5%;" type="submit" value="Login">
+
+            <!-- <button  id = "signIn">Login</button> -->
+        
+        
+
+        <div class="forgot-password">
+            <a href="./resetPassword.html" target = "_blank">Forgot your password?</a>
+        </div>
+        
+
+        <div class="register">
+            Don't have an account yet?
+            <a href="./register.html"><button id="register-link">Register here</button></a>
+        </div>
+        
+        
+    </div>
+
+    <div id="user_div" class="loggedin-div" style="display: none;" >
+        <ul>
+            <img id="logo" class="horizon-logo" style="height: 38vh; width: auto;" src="../../Elektrobit.png">
+            <img src="../../vitLogo2.png" style="height: 88px;margin:15px">
+            <li><a class="active"id = "d" href="#dashboard" onclick="switchHandler('dasboard')">Dashboard</a></li>
+            <li><a href="#application" id = "a" onclick="switchHandler('application');submissionHandler()">Application</a></li>
+            <li><a href="#team" id = "t" onclick="switchHandler('team');checkHandler();">Team</a></li>
+            <!-- <li id = "godMode" style = "display: none;"><a href="#Admin" id = "A" onclick="switchHandler('Admin');">Admin</a></li> -->
+            <li><a onclick="logout()">Logout</a></li>
+
+            
+          </ul>
+          
+          <div id = "dasboard" style="margin-left:25%;padding:1px 16px;height:1000px; ">
+            <h2 style = "text-align: center; color:#47349b;font-weight:900; font-size: 50px;"><strong>DASHBOARD</strong></h2>
+            <div style="display: flex;
+            align-items: center;
+            justify-content: center;
+            padding-top: 10%;">
+            <div class="card" style="align-self: center;">
+                <div class="container">
+                    <h4 style="text-align: center; color:#47349b"><b>Your Status:</b></h4> 
+                    <div style = "display: flex;width:100%; height: 53px; background-color: blanchedalmond;align-items: center;justify-content: center;margin:0%">
+                        <p  style="text-align: center; color:black;"><span id = "status"></span></p> 
+                    </div>
+                    <div class="devicer"></div>
+                    <div style="display:flex;align-content: center;justify-content: center;">
+                        <h5 >Welcome back, </h5>&nbsp;<h5 id = "displayUser"></h5>
+                    </div>
+                    <p id = "displayStatusDis">Last date for registration and team formation is 9<sup>th</sup> November 2020</p>
+                    <div style = "display: flex;margin-bottom: 3%;">
+                        <button class = "ui pink button"><a style = "color: white;text-decoration: none;" href="#team" onclick="switchHandler('team');checkHandler();">View your team</a></button>
+                        <button class = "ui purple button"><a style = "color: white;text-decoration: none;" href="#application" onclick="switchHandler('application')">View your application</a></button>
+                    </div>
+                </div>
+            </div>
+        </div>
+           
+          </div>
+
+        <div id = "application" style="margin-left:25%;padding:1px 16px;height:1000px; display: none;">
+            <h2 style = "text-align: center; color:#47349b;font-weight:900; font-size: 50px;"><strong>Application</strong></h2>
+            
+            <h4 style = "text-align: center; color:black;font-weight:900; font-size: 25px;" id = "startInfo"></h4>
+
+            
+                
+           
+                <div style="display: none;
+                align-items: center;
+                justify-content: center;
+                padding-top: 10%;" id = "submissionOne">
+                   <h7 style = "text-align: center; color:black;font-weight:900; font-size: 20px;margin-bottom: 1%;" >Note: Please note that once you have submited the idea you won't be able to edit it</h7>
+        
+                    <div class="card5" style="align-self: center;margin-bottom: 3%;">
+                        
+                        <div class="container">
+                            <h4>Select problem statement you will be working on:</h4>
+                            <div style = "display: block">
+                                <label class="container">Digital car manual 
+                                    <input onclick="displayProblem()"   type="radio" checked="checked" name="radio" value = "Digital manual for the Car" id = "DigitalmanualfortheCar">
+                                    <span class="checkmark"></span>
+                                  </label>
+                                  <label class="container">RTOS – based Instrument cluster
+                                    <input onclick="displayProblem()" type="radio" name="radio" value = "Instrument Cluster Stack based on Realtime OS " id = "InstrumentClusterStackbasedonRealtimeOS">
+                                    <span class="checkmark"></span>
+                                  </label>
+                                  <label class="container">ADAS Software algorithms
+                                    <input onclick="displayProblem()" type="radio" name="radio" value = "ADAS Software algorithms" id = "ADASSoftwarealgorithms">
+                                    <span class="checkmark"></span>
+                                  </label>
+                                  <label class="container">In Vehicle Infrastructure 
+                                    <input onclick="displayProblem()" type="radio" name="radio" value = "In Vehicle Infrastructure" id = "InVehicleInfrastructure">
+                                    <span class="checkmark"></span>
+                                  </label>
+                                  <label class="container">Car as the Third Living Space  
+                                    <input onclick="displayProblem()" type="radio" name="radio" value = "Car as the Third Living Space" id = "CarastheThirdLivingSpace">
+                                    <span class="checkmark"></span>
+                                  </label>
+                                  <label class="container">Connected Platform 
+                                    <input onclick="displayProblem()" type="radio" name="radio" value = "Connected Platform" id = "ConnectedPlatform">
+                                    <span class="checkmark"></span>
+                                  </label>
+                            </div>
+                            <div id = "DigitalmanualfortheCarproblem" style = "display: none;background-color: rgb(233, 236, 239);padding: 1% 5%;">
+                                <h4>Problem Statement:</h4>
+                                <p>Many a times when in need, it is difficult to go through the user manual to understand what the warning indication of the tell tale indicates or we don’t know many features of the infotainment system at all just as some example. To overcome all this, and to know your car as you need, what, if I had a genie which can tell me exactly at that moment what is wrong with the car or what are the features supported in my infotainment system. It would be really great! This is the idea of “The Digital Manual”. The Digital Manual is a smart phone application which can help create a audio and visual experience of the “OEM user manual” and beyond.
+                                </br></br>
+                                    <b>For reference :</b> In Maruti Arena showcase the accessory configuration system is touch input driven, where in the entire 3D model of the car is present and provides virtual visualisation of the accessory selected.
+                                </br></br>
+                                <b>    Details:</b>
+                                    Develop a software tool which can 
+                                    <ol >
+                                    <li style="list-style-type: circle !important">Generate the digital content of the manual.</li>
+                                    <li style="list-style-type: circle !important">The digital manual App should not need any enhancements in any of the ECUs in the car. It shall have no connectivity to any of the ECUs on-board the automobile.</li> 
+                                    <li style="list-style-type: circle !important">Based on the VIN, that is registered for the digital manual , the software tool shall pick the relevant digital content from the cloud for presenting to the user. </li>
+                                    <li style="list-style-type: circle !important">Tool can generate a Holographic representation of car/3D display of car to showcase the features provided. Basically, the tool has to provide a good user experience of the requested feature</li>
+                                    <li style="list-style-type: circle !important">Multiple language support to be provided</li>
+                                    <li style="list-style-type: circle !important">User experience enhancement can be with both Voice and Video etc.</li>
+                                    </ol>
+                                </br>
+                                   <p> Technology : Android or a iOS App on the Smart Phone </p>
+                            </div>
+                            <div id = "InstrumentClusterStackbasedonRealtimeOSproblem" style = "display: none;background-color: rgb(233, 236, 239);padding: 1% 5%;">
+                                <h4>Problem Statement:</h4>
+                                <p>Create a Software platform(HMI layer, Application layer and Middleware layer as in the architecture shown) for housing the features required for low cost Instrument Cluster stack.
+                                </p>
+                            </br></br>
+                            <b>    Details:</b>
+                                Develop a software tool which can 
+                                <ol >
+                                <li style="list-style-type: circle !important">The platform shall be demonstrated on HW platforms like Raspberry Pi,  Arduino or similar boards
+                                </li>
+                                <li style="list-style-type: circle !important">It is necessary that the IC Platform is hosted on a Realtime Operating System
+                                </li> 
+                                <li style="list-style-type: circle !important">This platform should take care of the software components required to realise the functionalities required for the Instrument Cluster in the Middleware, Application and HMI layer. 
+                                </li>
+                                <li style="list-style-type: circle !important">You are free to choose suitable open source frameworks and OS that have free license for commercial use
+                                </li>
+                                <li style="list-style-type: circle !important">Following features shall be demonstrated by the developed stack
+                                    <ol>
+                                        <li style="list-style-type: circle !important">Switch ON\OFF Animation</li>   
+                                        <li style="list-style-type: circle !important">BT Profiles to be supported HFP, AVRCP</li>   
+                                        <li style="list-style-type: circle !important">Better and faster emergency care during accidents and vehicle impact.</li>   
+                                        <li style="list-style-type: circle !important">Develop also a Companion App on the Smart phone to demonstrate the communication with the cluster on BLE </li>   
+                                        <li style="list-style-type: circle !important">A software/module to refer the prescribed penalty for violating traffic rules accomplished using intervehicle communications in the IoV framework
+                                        </li>   
+                                    </ol>
+                                </li>
+                                </ol>
+                            </div>
+                            <div id = "ADASSoftwarealgorithmsproblem" style = "display: none;background-color: rgb(233, 236, 239);padding: 1% 5%;">
+                                <h4>Problem Statement:</h4>
+                                <p>Customized ADAS solution platform for Indian market. The main idea here is to use minimal hardware and focus on the software algorithms to realize the driver assistance functionality.
+                                    <ol >
+                                        <li style="list-style-type: circle !important">Linux  Virtual Machine or High-end controller like NVIDIA can be used
+                                        </li>
+                                    </ol>
+                                </p>
+
+
+
+
+                                <h4>Select anyone of the problem statement for the given Theme:</h4>
+                            </br>
+                            
+                                <ol >
+                                    <div style = "display: block">
+                                        <label class="container">Emotion recognition of driver
+                                            
+                                            <input type="radio" checked="checked" name="radio4" value = "Emotion recognition of driver" id = "Emotionrecognitionofdriver0">
+                                            <span class="checkmark"></span>
+                                        </label>
+                                        <label class="container">Stationary vehicle / object detection and alert
+                                            
+                                            <input type="radio" name="radio4" value = "Stationary vehicle" id = "Stationaryvehicle0">
+                                            <span class="checkmark"></span>
+                                        </label>
+                                          <label class="container">Blind spot detection while driving
+                                            
+                                            <input type="radio" name="radio4" value = "Blind spot detection while driving" id = "Blindspotdetectionwhiledriving0">
+                                            <span class="checkmark"></span>
+                                          </label>
+                                          <label class="container">Rider Assistance: Driver assistance focusses on partial or fully automatic driving including the scenarios of operational assistance in heavy traffic on lanes or parking areas, in-lane or in highways
+                                             
+                                            <input type="radio" name="radio4" value = "Rider Assistance" id = "RiderAssistance0">
+                                            <span class="checkmark"></span>
+                                          </label>
+                                          <label class="container">Vehicle Telematics : A crash resistant duplex black box ensures car safety and guides in going on the correct track
+                                             
+                                            <input type="radio" name="radio4" value = "Vehicle Telematics" id = "VehicleTelematics0">
+                                            <span class="checkmark"></span>
+                                          </label>
+                                          <label class="container">What technologies do you need so that autonomous and manual cars can co-exist in harmony
+                                             
+                                            <input type="radio" name="radio4" value = "What technologies" id = "Whattechnologies0">
+                                            <span class="checkmark"></span>
+                                          </label>
+                                          <label class="container">Sensing environment around vehicle using AI and ML with more software and less hardware. To use camera-based input for face, emotion, object detection and blind spot in the car
+                                             
+                                            <input type="radio" name="radio4" value = "Sensing environment" id = "Sensingenvironment0">
+                                            <span class="checkmark"></span>
+                                          </label>
+                                          
+                                    </div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+                            
+                            </div>
+                            <div id = "InVehicleInfrastructureproblem" style = "display: none;background-color: rgb(233, 236, 239);padding: 1% 5%;">
+                                <h4>Problem Statement:</h4>
+                                <p>Imagine enhancements to the Vehicle Infrastructure to address Safety and convenience needs of the passengers in the Car. In order to cater to these needs, what are the solutions that can be added / modified in the car.
+                                    <ol >
+                                        <li style="list-style-type: circle !important">An embedded solution (HW + SW) shall be proposed and designed to the chosen use-case
+                                        </li>
+                                        <li style="list-style-type: circle !important">Use suitable HW boards and open source SW platforms and framework to show case the solution
+                                        </li>
+                                    </ol>
+                                </p>
+
+
+
+
+                                <h4>Select anyone of the problem statement for the given Theme:</h4>
+                            </br>
+                            
+                                <ol >
+                                    <div style = "display: block">
+                                        <label class="container">A way to find out the oxygen content and temperature present inside the car  (this will help in taking the right pre-caution if any people are there inside the car when all the windows are closed, and ignition is off)
+                                            
+                                            <input type="radio" checked="checked" name="radio9" value = "oxygen content" id = "oxygencontent0">
+                                            <span class="checkmark"></span>
+                                        </label>
+                                        <label class="container">Can we have a de-centralized locking system
+                                            
+                                            <input type="radio" name="radio9" value = "decentralized locking system" id = "decentralizedlockingsystem0">
+                                            <span class="checkmark"></span>
+                                        </label>
+                                          <label class="container">A visual Dashboard based on data analytics for percentage utilization of vehicle facilities and utilities using IOT
+                                            
+                                            <input type="radio" name="radio9" value = "data analytics" id = "dataanalytics0">
+                                            <span class="checkmark"></span>
+                                          </label>
+                                          <label class="container">Cabin air quality monitoring 
+                                             
+                                            <input type="radio" name="radio9" value = "Cabin air quality monitoring" id = "Cabinairqualitymonitoring0">
+                                            <span class="checkmark"></span>
+                                          </label>
+                                          <label class="container">Automatic A/C control based on Passenger occupancy
+                                             
+                                            <input type="radio" name="radio9" value = "Passenger occupancy" id = "Passengeroccupancy0">
+                                            <span class="checkmark"></span>
+                                          </label>
+                                          <label class="container">What technologies do you need so that autonomous and manual cars can co-exist in harmony
+                                             
+                                            <input type="radio" name="radio9" value = "Battery maintenance and control for Electric Vehicles" id = "BatterymaintenanceandcontrolforElectricVehicles0">
+                                            <span class="checkmark"></span>
+                                          </label>
+                                          <label class="container">Infant Identification and alert system
+                                             
+                                            <input type="radio" name="radio9" value = "Infant Identification" id = "InfantIdentification0">
+                                            <span class="checkmark"></span>
+                                          </label>
+                                          <label class="container">Anti-Theft Monitoring Systems for 4 wheelers linked with the overall system (namely wheels, fuel etc) along with ignition
+                                             
+                                            <input type="radio" name="radio9" value = "Anti Theft Monitoring Systems" id = "AntiTheftMonitoringSystems0">
+                                            <span class="checkmark"></span>
+                                          </label>
+                                          
+                                    </div>
+
+                            </div>
+
+
+
+
+
+
+
+
+
+
+                        
+                            <div id = "CarastheThirdLivingSpaceproblem" style = "display: none;background-color: rgb(233, 236, 239);padding: 1% 5%;">
+                                <h4>Problem Statement:</h4>
+                                <p>Car As the Third Living Space 
+
+                                </p>
+                            </br></br>
+                            How would you visualize the environment of an semi-autonomous / fully autonomous car.
+
+                                <ol >
+                                <li style="list-style-type: circle !important">CAD drawings showing how the dash board will look like in future
+
+                                    <ol>
+                                        <li style="list-style-type: circle !important">How would the interiors look like?</li>   
+                                        <li style="list-style-type: circle !important">Would you need steering?</li>   
+                                        <li style="list-style-type: circle !important">How can the car seating be remodelled?</li>   
+                                        <li style="list-style-type: circle !important">How can the Infotainment system be?</li>   
+                                        <li style="list-style-type: circle !important">How would the third living space (Car) look like?
+                                        </li>   
+                                        <li style="list-style-type: circle !important">Let your creativity and imagination run wild! </li>  
+                                        
+ 
+                                    </ol>
+                                </li>
+                            </div>
+                            <div id = "ConnectedPlatformproblem" style = "display: none;background-color: rgb(233, 236, 239);padding: 1% 5%;">
+                                <h4>Problem Statement:</h4>
+                                <p>To develop a connected platform in cloud which can securely use the data in the vehicle and provide personalized services to the users. 
+
+                                </p>
+                            </br>
+                            <h4>Select anyone of the problem statement for the given Theme:</h4>
+                            </br>
+                            
+                                <ol >
+                                    <div style = "display: block">
+                                        <label class="container">Smart Parking System comprising prediction of geolocation, space availability accounting the vehicle dimensions through live interaction with the parking database
+                                            <ol>
+                                                <li style="list-style-type: circle !important">Module that integrates the paid parking stations in a particular location so that the user will get the parking vacancy details instantly/pre book
+                                                </li>   
+                                                <li style="list-style-type: circle !important">Connected Cars: City navigation, location-based services, drive assist applications, car-on-demand services, usage-based insurance, remote diagnostics, car security services
+                                                </li>   
+                                    
+                                    
+                                            </ol>
+                                            <input type="radio" checked="checked" name="radio3" value = "Smart Parking" id = "SmartParking0">
+                                            <span class="checkmark"></span>
+                                        </label>
+                                        <label class="container">Predictive Maintenance : Vehicle maintenance application that periodically updates the oil status, aging of parts both interior and exterior and finally intimates the user in the form of a decision to proceed with maintenance, mileage and part replacement in tandem with the manufacturers database
+                                            
+                                            <input type="radio" name="radio3" value = "Predictive Maintenance" id = "PredictiveMaintenance0">
+                                            <span class="checkmark"></span>
+                                        </label>
+                                          <label class="container">A connected Platform used by Malls, theaters, shops to advertise their products. Some of the examples of how this platform can be utilized are:
+                                            <ol>
+                                                <li style="list-style-type: circle !important">Localization results for user search while driving on the way.
+        
+                                                </li>   
+                                                <li style="list-style-type: circle !important">Highlighting the localization during on his travel (Ex: ATM, hospital, mall with distance on his left side.  Petrol bunk, restaurant, post office on his right side )
+        
+                                                </li>   
+                                    
+                                    
+                                            </ol>
+                                            <input type="radio" name="radio3" value = "A connected Platform used by Malls" id = "AconnectedPlatformusedbyMalls0">
+                                            <span class="checkmark"></span>
+                                          </label>
+                                          <label class="container">Consider a user traveling from  X position to Y position, during his travel he would like to know about the best neurologist hospital for consultation. So App will list down all the hospitals within certain radius in the navigation with the distance.
+                                            - In a connected platform, identify ways to provide monetary benefits to the vehicle owner.
+                                             
+                                            <input type="radio" name="radio3" value = "User traveling" id = "Usertraveling0">
+                                            <span class="checkmark"></span>
+                                          </label>
+                                          
+                                    </div>
+                                
+                                <li style="list-style-type: circle !important">Technology areas (involved):
+
+                                    <ol>
+                                        <li style="list-style-type: circle !important">Cloud Infrastructure, Android, GPS, Content Management 
+
+                                        </li>   
+                                        
+                                    </ol>
+                                </li>
+                                </ol>
+                            </div>
+                            <h4>Brief description of the idea:</h4>
+
+                            <textarea placeholder="Mention your Idea" rows="20" name="comment[text]" id="comment_textOne" cols="40" class="ui-autocomplete-input" autocomplete="off" role="textbox" aria-autocomplete="list" aria-haspopup="true"></textarea>
+                        
+                            <div id = "removeSaveSubmit"style = "display: flex; margin-top: 3%;">
+                                <button id = "saveOne" class = "ui button" style = "width:18%;height:54%; color: white;text-decoration: none;margin:3% 62% ;background-color: #0275d8;   "  onclick="submissionSubmitHandler()">Save</button>
+                                <button class = "ui purple button" style = "width:18%;height:54%; color: white;text-decoration: none;margin:3% -60% ;background-color: #5cb85c  !important;"  onclick="frezeHandlerFirst()">Submit</button>
+                            </div>
+                        </div>
+                    </div> 
+
+
+
+                    <div class="card5" style="align-self: center;display: none;" id = "second">
+                        <div class="container">
+                            <h4>Select problem statement you will be working on:</h4>
+                            <div style = "display: block">
+                                <label class="container">Digital car manual
+                                    <input onclick="displayProblem2()" type="radio" checked="checked" name="radio1" value = "Digital manual for the Car" id = "DigitalmanualfortheCar1">
+                                    <span class="checkmark"></span>
+                                  </label>
+                                  <label class="container">RTOS – based Instrument cluster
+                                    <input onclick="displayProblem2()" type="radio" name="radio1" value = "Instrument Cluster Stack based on Realtime OS " id = "InstrumentClusterStackbasedonRealtimeOS1">
+                                    <span class="checkmark"></span>
+                                  </label>
+                                  <label class="container">ADAS Software algorithms
+                                    <input onclick="displayProblem2()" type="radio" name="radio1" value = "ADAS Software algorithms" id = "ADASSoftwarealgorithms1">
+                                    <span class="checkmark"></span>
+                                  </label>
+                                  <label class="container">In Vehicle Infrastructure 
+                                    <input onclick="displayProblem2()" type="radio" name="radio1" value = "In Vehicle Infrastructure" id = "InVehicleInfrastructure1">
+                                    <span class="checkmark"></span>
+                                  </label>
+                                  <label class="container">Car as the Third Living Space  
+                                    <input onclick="displayProblem2()" type="radio" name="radio1" value = "Car as the Third Living Space" id = "CarastheThirdLivingSpace1">
+                                    <span class="checkmark"></span>
+                                  </label>
+                                  <label class="container">Connected Platform 
+                                    <input onclick="displayProblem2()" type="radio" name="radio1" value = "Connected Platform" id = "ConnectedPlatform1">
+                                    <span class="checkmark"></span>
+                                  </label>
+                            </div>
+                            <div id = "DigitalmanualfortheCar1problem" style = "display: none;background-color: rgb(233, 236, 239);padding: 1% 5%;">
+                                <h4>Problem Statement:</h4>
+                                <p>Many a times when in need, it is difficult to go through the user manual to understand what the warning indication of the tell tale indicates or we don’t know many features of the infotainment system at all just as some example. To overcome all this, and to know your car as you need, what, if I had a genie which can tell me exactly at that moment what is wrong with the car or what are the features supported in my infotainment system. It would be really great! This is the idea of “The Digital Manual”. The Digital Manual is a smart phone application which can help create a audio and visual experience of the “OEM user manual” and beyond.
+                                </br></br>
+                                    <b>For reference :</b> In Maruti Arena showcase the accessory configuration system is touch input driven, where in the entire 3D model of the car is present and provides virtual visualisation of the accessory selected.
+                                </br></br>
+                                <b>    Details:</b>
+                                    Develop a software tool which can 
+                                    <ol >
+                                    <li style="list-style-type: circle !important">Generate the digital content of the manual.</li>
+                                    <li style="list-style-type: circle !important">The digital manual App should not need any enhancements in any of the ECUs in the car. It shall have no connectivity to any of the ECUs on-board the automobile.</li> 
+                                    <li style="list-style-type: circle !important">Based on the VIN, that is registered for the digital manual , the software tool shall pick the relevant digital content from the cloud for presenting to the user. </li>
+                                    <li style="list-style-type: circle !important">Tool can generate a Holographic representation of car/3D display of car to showcase the features provided. Basically, the tool has to provide a good user experience of the requested feature</li>
+                                    <li style="list-style-type: circle !important">Multiple language support to be provided</li>
+                                    <li style="list-style-type: circle !important">User experience enhancement can be with both Voice and Video etc.</li>
+                                    </ol>
+                                </br>
+                                   <p> Technology : Android or a iOS App on the Smart Phone </p>
+                            </div>
+                            <div id = "InstrumentClusterStackbasedonRealtimeOS1problem" style = "display: none;background-color: rgb(233, 236, 239);padding: 1% 5%;">
+                                <h4>Problem Statement:</h4>
+                                <p>Create a Software platform(HMI layer, Application layer and Middleware layer as in the architecture shown) for housing the features required for low cost Instrument Cluster stack.
+                                </p>
+                            </br></br>
+                            <b>    Details:</b>
+                                Develop a software tool which can 
+                                <ol >
+                                <li style="list-style-type: circle !important">The platform shall be demonstrated on HW platforms like Raspberry Pi,  Arduino or similar boards
+                                </li>
+                                <li style="list-style-type: circle !important">It is necessary that the IC Platform is hosted on a Realtime Operating System
+                                </li> 
+                                <li style="list-style-type: circle !important">This platform should take care of the software components required to realise the functionalities required for the Instrument Cluster in the Middleware, Application and HMI layer. 
+                                </li>
+                                <li style="list-style-type: circle !important">You are free to choose suitable open source frameworks and OS that have free license for commercial use
+                                </li>
+                                <li style="list-style-type: circle !important">Following features shall be demonstrated by the developed stack
+                                    <ol>
+                                        <li style="list-style-type: circle !important">Switch ON\OFF Animation</li>   
+                                        <li style="list-style-type: circle !important">BT Profiles to be supported HFP, AVRCP</li>   
+                                        <li style="list-style-type: circle !important">Better and faster emergency care during accidents and vehicle impact.</li>   
+                                        <li style="list-style-type: circle !important">Develop also a Companion App on the Smart phone to demonstrate the communication with the cluster on BLE </li>   
+                                        <li style="list-style-type: circle !important">A software/module to refer the prescribed penalty for violating traffic rules accomplished using intervehicle communications in the IoV framework
+                                        </li>   
+                                    </ol>
+                                </li>
+                                </ol>
+                            </div>
+                            <div id = "ADASSoftwarealgorithms1problem" style = "display: none;background-color: rgb(233, 236, 239);padding: 1% 5%;">
+                                <h4>Problem Statement:</h4>
+                                <p>Customized ADAS solution platform for Indian market. The main idea here is to use minimal hardware and focus on the software algorithms to realize the driver assistance functionality.
+
+                                </p>
+                                <h4>Problem Statement:</h4>
+                                <p>Customized ADAS solution platform for Indian market. The main idea here is to use minimal hardware and focus on the software algorithms to realize the driver assistance functionality.
+                                    <ol >
+                                        <li style="list-style-type: circle !important">Linux  Virtual Machine or High-end controller like NVIDIA can be used
+                                        </li>
+                                    </ol>
+                                </p>
+
+
+
+
+                                <h4>Select anyone of the problem statement for the given Theme:</h4>
+                            </br>
+                            
+                                <ol >
+                                    <div style = "display: block">
+                                        <label class="container">Emotion recognition of driver
+                                            
+                                            <input type="radio" checked="checked" name="radio5" value = "Emotion recognition of driver" id = "Emotionrecognitionofdriver">
+                                            <span class="checkmark"></span>
+                                        </label>
+                                        <label class="container">Stationary vehicle / object detection and alert
+                                            
+                                            <input type="radio" name="radio5" value = "Stationary vehicle" id = "Stationaryvehicle">
+                                            <span class="checkmark"></span>
+                                        </label>
+                                          <label class="container">Blind spot detection while driving
+                                            
+                                            <input type="radio" name="radio5" value = "Blind spot detection while driving" id = "Blindspotdetectionwhiledriving">
+                                            <span class="checkmark"></span>
+                                          </label>
+                                          <label class="container">Rider Assistance: Driver assistance focusses on partial or fully automatic driving including the scenarios of operational assistance in heavy traffic on lanes or parking areas, in-lane or in highways
+                                             
+                                            <input type="radio" name="radio5" value = "Rider Assistance" id = "RiderAssistance">
+                                            <span class="checkmark"></span>
+                                          </label>
+                                          <label class="container">Vehicle Telematics : A crash resistant duplex black box ensures car safety and guides in going on the correct track
+                                             
+                                            <input type="radio" name="radio5" value = "Vehicle Telematics" id = "VehicleTelematics">
+                                            <span class="checkmark"></span>
+                                          </label>
+                                          <label class="container">What technologies do you need so that autonomous and manual cars can co-exist in harmony
+                                             
+                                            <input type="radio" name="radio5" value = "What technologies" id = "Whattechnologies">
+                                            <span class="checkmark"></span>
+                                          </label>
+                                          <label class="container">Sensing environment around vehicle using AI and ML with more software and less hardware. To use camera-based input for face, emotion, object detection and blind spot in the car
+                                             
+                                            <input type="radio" name="radio5" value = "Sensing environment" id = "Sensingenvironment">
+                                            <span class="checkmark"></span>
+                                          </label>
+                                          
+                                    </div>
+                            </div>
+
+
+
+
+
+                            <div id = "InVehicleInfrastructure1problem" style = "display: none;background-color: rgb(233, 236, 239);padding: 1% 5%;">
+                                <h4>Problem Statement:</h4>
+                                <p>Imagine enhancements to the Vehicle Infrastructure to address Safety and convenience needs of the passengers in the Car. In order to cater to these needs, what are the solutions that can be added / modified in the car.
+                                    <ol >
+                                        <li style="list-style-type: circle !important">An embedded solution (HW + SW) shall be proposed and designed to the chosen use-case
+                                        </li>
+                                        <li style="list-style-type: circle !important">Use suitable HW boards and open source SW platforms and framework to show case the solution
+                                        </li>
+                                    </ol>
+                                </p>
+
+
+
+
+                                <h4>Select anyone of the problem statement for the given Theme:</h4>
+                            </br>
+                            
+                                <ol >
+                                    <div style = "display: block">
+                                        <label class="container">A way to find out the oxygen content and temperature present inside the car  (this will help in taking the right pre-caution if any people are there inside the car when all the windows are closed, and ignition is off)
+                                            
+                                            <input type="radio" checked="checked" name="radio8" value = "oxygen content" id = "oxygencontent">
+                                            <span class="checkmark"></span>
+                                        </label>
+                                        <label class="container">Can we have a de-centralized locking system
+                                            
+                                            <input type="radio" name="radio8" value = "decentralized locking system" id = "decentralizedlockingsystem">
+                                            <span class="checkmark"></span>
+                                        </label>
+                                          <label class="container">A visual Dashboard based on data analytics for percentage utilization of vehicle facilities and utilities using IOT
+                                            
+                                            <input type="radio" name="radio8" value = "data analytics" id = "dataanalytics">
+                                            <span class="checkmark"></span>
+                                          </label>
+                                          <label class="container">Cabin air quality monitoring 
+                                             
+                                            <input type="radio" name="radio8" value = "Cabin air quality monitoring" id = "Cabinairqualitymonitoring">
+                                            <span class="checkmark"></span>
+                                          </label>
+                                          <label class="container">Automatic A/C control based on Passenger occupancy
+                                             
+                                            <input type="radio" name="radio8" value = "Passenger occupancy" id = "Passengeroccupancy">
+                                            <span class="checkmark"></span>
+                                          </label>
+                                          <label class="container">What technologies do you need so that autonomous and manual cars can co-exist in harmony
+                                             
+                                            <input type="radio" name="radio8" value = "Battery maintenance and control for Electric Vehicles" id = "BatterymaintenanceandcontrolforElectricVehicles">
+                                            <span class="checkmark"></span>
+                                          </label>
+                                          <label class="container">Infant Identification and alert system
+                                             
+                                            <input type="radio" name="radio8" value = "Infant Identification" id = "InfantIdentification">
+                                            <span class="checkmark"></span>
+                                          </label>
+                                          <label class="container">Anti-Theft Monitoring Systems for 4 wheelers linked with the overall system (namely wheels, fuel etc) along with ignition
+                                             
+                                            <input type="radio" name="radio8" value = "Anti Theft Monitoring Systems" id = "AntiTheftMonitoringSystems">
+                                            <span class="checkmark"></span>
+                                          </label>
+                                          
+                                    </div>
+                            </div>
+
+
+
+
+
+
+
+
+
+                            <div id = "CarastheThirdLivingSpace1problem" style = "display: none;background-color: rgb(233, 236, 239);padding: 1% 5%;">
+                                <h4>Problem Statement:</h4>
+                                <p>Car As the Third Living Space 
+
+                                </p>
+                            </br></br>
+                            How would you visualize the environment of an semi-autonomous / fully autonomous car.
+
+                                <ol >
+                                <li style="list-style-type: circle !important">CAD drawings showing how the dash board will look like in future
+
+                                    <ol>
+                                        <li style="list-style-type: circle !important">How would the interiors look like?</li>   
+                                        <li style="list-style-type: circle !important">Would you need steering?</li>   
+                                        <li style="list-style-type: circle !important">How can the car seating be remodelled?</li>   
+                                        <li style="list-style-type: circle !important">How can the Infotainment system be?</li>   
+                                        <li style="list-style-type: circle !important">How would the third living space (Car) look like?
+                                        </li>   
+                                        <li style="list-style-type: circle !important">Let your creativity and imagination run wild! </li>  
+                                        
+ 
+                                    </ol>
+                                </li>
+                            </div>
+                            <div id = "ConnectedPlatform1problem" style = "display: none;background-color: rgb(233, 236, 239);padding: 1% 5%;">
+                                <h4>Problem Statement:</h4>
+                                <p>To develop a connected platform in cloud which can securely use the data in the vehicle and provide personalized services to the users. 
+
+                                </p>
+                            </br>
+                            <h4>Select anyone of the problem statement for the given Theme:</h4>
+                            </br>
+                            
+                                <ol >
+                                    <div style = "display: block">
+                                        <label class="container">Smart Parking System comprising prediction of geolocation, space availability accounting the vehicle dimensions through live interaction with the parking database
+                                            <ol>
+                                                <li style="list-style-type: circle !important">Module that integrates the paid parking stations in a particular location so that the user will get the parking vacancy details instantly/pre book
+                                                </li>   
+                                                <li style="list-style-type: circle !important">Connected Cars: City navigation, location-based services, drive assist applications, car-on-demand services, usage-based insurance, remote diagnostics, car security services
+                                                </li>   
+                                    
+                                    
+                                            </ol>
+                                            <input type="radio" checked="checked" name="radio2" value = "Smart Parking" id = "SmartParking">
+                                            <span class="checkmark"></span>
+                                        </label>
+                                        <label class="container">Predictive Maintenance : Vehicle maintenance application that periodically updates the oil status, aging of parts both interior and exterior and finally intimates the user in the form of a decision to proceed with maintenance, mileage and part replacement in tandem with the manufacturers database
+                                            
+                                            <input type="radio" name="radio2" value = "Predictive Maintenance" id = "PredictiveMaintenance">
+                                            <span class="checkmark"></span>
+                                        </label>
+                                          <label class="container">A connected Platform used by Malls, theaters, shops to advertise their products. Some of the examples of how this platform can be utilized are:
+                                            <ol>
+                                                <li style="list-style-type: circle !important">Localization results for user search while driving on the way.
+        
+                                                </li>   
+                                                <li style="list-style-type: circle !important">Highlighting the localization during on his travel (Ex: ATM, hospital, mall with distance on his left side.  Petrol bunk, restaurant, post office on his right side )
+        
+                                                </li>   
+                                    
+                                    
+                                            </ol>
+                                            <input type="radio" name="radio2" value = "A connected Platform used by Malls" id = "AconnectedPlatformusedbyMalls">
+                                            <span class="checkmark"></span>
+                                          </label>
+                                          <label class="container">Consider a user traveling from  X position to Y position, during his travel he would like to know about the best neurologist hospital for consultation. So App will list down all the hospitals within certain radius in the navigation with the distance.
+                                            - In a connected platform, identify ways to provide monetary benefits to the vehicle owner.
+                                             
+                                            <input type="radio" name="radio2" value = "User traveling" id = "Usertraveling">
+                                            <span class="checkmark"></span>
+                                          </label>
+                                          
+                                    </div>
+                                
+                                <li style="list-style-type: circle !important">Technology areas (involved):
+
+                                    <ol>
+                                        <li style="list-style-type: circle !important">Cloud Infrastructure, Android, GPS, Content Management 
+
+                                        </li>   
+                                        
+                                    </ol>
+                                </li>
+                                </ol>
+                            </div>
+                            <h4>Brief description of the idea:</h4>
+
+                            <textarea placeholder="Mention your Idea" rows="20" name="comment[text]" id="comment_textSecond" cols="40" class="ui-autocomplete-input" autocomplete="off" role="textbox" aria-autocomplete="list" aria-haspopup="true"></textarea>
+                            
+
+                            
+                            <div id = "removeSaveSubmitSecond"style = "display: flex; margin-top: 3%;">
+                                <button class = "ui  button" style = "width:18%;height:54%; color: white;text-decoration: none;margin:3% 62% ;background-color: #0275d8;   "  onclick="submissionSubmitHandlerSecond()">Save</button>
+                                <button class = "ui purple button" style = "width:18%;height:54%; color: white;text-decoration: none;margin:3% -60% ;background-color: #5cb85c  !important;"  onclick="frezeHandlerSecond()">Submit</button>
+                            </div>
+
+                            
+                        </div>
+                    </div>   
+
+         
+                </div> 
+                <button id = "addSub" class = "ui purple button" style = "width:11%; color: white;text-decoration: none;margin:3% 84%"  onclick="addSubmission()">Add</button>
+                <button id = "removeSub" class = "ui purple button" style = "width:11%; color: white;text-decoration: none;margin:3% 84% ;display:none;background-color: #5bc0de   !important;"  onclick="removeSubmission()">Hide</button>
+
+           
+          </div>
+
+          <div id = "team" style="margin-left:25%;padding:1px 16px;height:1000px; display: none;">
+            <h2 style = "text-align: center; color:#47349b;font-weight:900; font-size: 50px;"><strong>TEAM</strong></h2>
+            
+            <p style = "text-align: center; color:black;padding-top: 7%; font-size: 17px;" id = "teamMsg">You can create or join a team for participation. Thus all members of a team will be selected or rejected together.</p>
+                <div id = "loaderTeamStatus" class="loader2" style = "display: none;margin-left: 50%;margin-top: 10%;"></div>
+                <div id = "TeamJoin">
+            
+                <div id = "createJoin" style = "margin: 0 10% 10% 10%;display: none;">
+                    <div class="tab">
+                        <button class="tablinks" onclick="openCity(event, 'London')">Create</button>
+                        <button class="tablinks" onclick="openCity(event, 'Paris')">Join</button>
+                    </div>
+                    
+                    <div id="London" class="tabcontent">
+                        <div id = "inputTeamNameDiv" style="display: grid;justify-content: center;">
+                            <h3 style = "text-align: center;color: black;">Enter Team Name:</h3>
+                            
+                            <input  style = " background-color: white;align-self: center;" required  type="text" id="teamName" name="teamName" placeholder="Team name">
+                            <div id = "loader" class="loader" style = "display: none;margin-left: 42%;"></div>
+                            <input id = "teamSubmitBtn" onclick = "teamNameHandler()"  style= "margin-top: 7%;display: block;" type="submit" value="Submit">
+                        </div>
+                        <!-- <div id = "teamDetialDiv" style="display: none;justify-content: center;">
+                            <h3 style = "text-align: center;">Team Name:</h3>
+                            <h3 id = "newTeamName" style = "text-align: center;"></h3>
+
+                            <h5 style = "text-align: center;">Team Code:</h5>
+                            <h3 style = "text-align: center;">Team Members:</h3>
+
+                        </div> -->
+
+                    </div>
+                    
+                    <div id="Paris" class="tabcontent">
+                        <div id = "inputTeamNameDiv" style="display: grid;justify-content: center;">
+                            <h3 style = "text-align: center;color: black;">Enter Team Code:</h3>
+                            
+                            <input  style = " background-color: white;align-self: center;" required type="text" id="teamCode" name="teamName" placeholder="Team code">
+                            <div id = "loader" class="loader" style = "display: none;margin-left: 42%;"></div>
+                            <input id = "teamSubmitBtn" onclick = "teamJoinHandler()" style= "margin-top: 7%;display: block;" type="submit" value="Submit">
+                        </div> 
+                    </div>
+                </div>
+
+                <div style="display: flex;
+                        align-items: center;
+                        justify-content: center;
+                        ">
+                    <div id = "TeamStatus" class="card2" style="align-self: center;display: none;padding-bottom: 1%;">
+                    
+                            <div class="container">
+                                <h4 style="text-align: center; color:#47349b"><b>Team Name:</b></h4>
+                                <p  style="text-align: center; color:black"><span id = "teamNameLoad"></span></p> 
+                                <h4 style="text-align: center; color:#47349b"><b>Team Code:</b></h4>
+                                <h5 id = "teamUniqueCode" style = "text-align: center;"></h5>
+                                <h4 style="text-align: center; color:#47349b"><b>Team Members:</b></h4>
+
+                                <div id="memberName"style = "text-align: center;padding-bottom: 3%;"></div>
+
+                                
+                                <button onclick="leaveTeamHandler()"  class='ph-button ph-btn-red' id = "hideLeave">Leave</button>
+
+
+                            </div>
+
+                    </div>
+                </div>
+
+
+            </div>
+                
+          </div>
+        
+
+
+
+          
+        
+        
+    </div> 
+          
+        
+        
+</div>
+        
+        
+      
+    
+ 
+<script>
+    function openCity(evt, cityName) {
+      var i, tabcontent, tablinks;
+      tabcontent = document.getElementsByClassName("tabcontent");
+      for (i = 0; i < tabcontent.length; i++) {
+        tabcontent[i].style.display = "none";
+      }
+      tablinks = document.getElementsByClassName("tablinks");
+      for (i = 0; i < tablinks.length; i++) {
+        tablinks[i].className = tablinks[i].className.replace(" active", "");
+      }
+      document.getElementById(cityName).style.display = "block";
+      evt.currentTarget.className += " active";
+    }
+    </script>
+    <!-- <script>
+        function openCity(evt, cityName) {
+          var i, tab_content, tab_links;
+          tab_content = document.getElementsByClassName("tab_content");
+          for (i = 0; i < tab_content.length; i++) {
+            tab_content[i].style.display = "none";
+          }
+          tab_links = document.getElementsByClassName("tab_links");
+          for (i = 0; i < tab_links.length; i++) {
+            tab_links[i].className = tab_links[i].className.replace(" active", "");
+          }
+          document.getElementById(cityName).style.display = "block";
+          evt.currentTarget.className += " active";
+        }
+        </script> -->
+<script>
+        window.addEventListener("load", function () {
+    const loader = document.querySelector(".loader");
+    loader.className += " hidden"; // class "loader hidden"
+});
+    </script>
+  
+</body>
+
+</html>

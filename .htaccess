@@ -1,0 +1,10 @@
+RewriteEngine On
+RewriteCond %{SERVER_PORT} 80
+RewriteCond %{HTTP_HOST} ^(www\.)?technica.istevit\.in
+RewriteRule ^(.*)$ https://technica.istevit.in/$1 [R,L]
+
+
+<Files 403.shtml>
+order allow,deny
+allow from all
+</Files>
